@@ -16,7 +16,8 @@ class HttpSource<T> extends IHttpDataSource<T> {
         baseUrl: basePath.toString(),
       ),
     );
-    return HttpSource._(dioClient, (data) => )
+    throw UnimplementedError();
+    // return HttpSource._(dioClient, (data) => )
   }
   @override
   Future<internal.Response<T>> get(Uri path) async {

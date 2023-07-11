@@ -5,26 +5,30 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hacker_news_clone/core/models/hacker_news_item.dart';
 
 import 'package:hacker_news_clone/main.dart';
 
+typedef TestType = ({int time});
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  final input = {
+    "by": "shankys",
+    "descendants": 1,
+    "id": 809,
+    "kids": [823],
+    "score": 17,
+    "time": 1172281307,
+    "title":
+        "Startup Success 2006 [video] - Panel moderated by Guy Kawasaki featuring Reid Hoffman (LinkedIn), Joe Kraus (Excite, Jotspot), and others",
+    "type": "story",
+    "url": "http://www.veotag.com/player/?u=gwbrgolswx"
+  };
+  // final TestType item = (time: DateTime.now());
+  // DateTime time;
+  // TestType item = (time: 0);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
-
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+  print(HNStory.fromJson(input));
 }
