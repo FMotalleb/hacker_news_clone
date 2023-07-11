@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart' as rx;
 
-class DoubleTapResult<T> extends Stream<T> {
-  factory DoubleTapResult(
+class CachedResult<T> extends Stream<T> {
+  factory CachedResult(
     Future<T> fromCache,
     Future<T> toWaitFor,
   ) {
@@ -14,10 +14,10 @@ class DoubleTapResult<T> extends Stream<T> {
         ],
       ),
     );
-    return DoubleTapResult._(stream);
+    return CachedResult._(stream);
   }
 
-  DoubleTapResult._(
+  CachedResult._(
     this._dataStream,
   );
   final Stream<T> _dataStream;
