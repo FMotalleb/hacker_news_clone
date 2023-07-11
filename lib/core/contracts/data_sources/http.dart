@@ -3,5 +3,6 @@ import 'package:hacker_news_clone/core/models/response_model.dart' //
 
 // ignore: one_member_abstracts
 abstract class IHttpDataSource<T> {
-  Future<internal.Response<T>> get(Uri path);
+  Future<internal.Response<T>> get(String path);
+  Future<internal.Response<String>> getRaw(String path);
 }
