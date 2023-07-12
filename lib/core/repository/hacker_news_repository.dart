@@ -13,15 +13,21 @@ class HNRepository extends IHNewsRepository with LogableObject {
   final ILocalDataSource<String?> _localRawSource;
   static const _maxItemKey = 0xFFFFFFFE;
 
+  @override
   CachedResult<int> maxItemsCount() {
     final fromCache = _localRawSource
         .get(_maxItemKey)
         .then(
-          (value) => value ?? '0',
+          (value) => value,
         )
         .then(
-          int.parse,
-        );
+      (value) {
+        if (value != null) {
+          return int.tryParse(value);
+        }
+        return null;
+      },
+    );
 
     final requestResult = _httpDataSource
         .getRaw('maxitem.json')
@@ -39,7 +45,7 @@ class HNRepository extends IHNewsRepository with LogableObject {
             value.toString(),
           );
         }
-        return value ?? 0;
+        return value;
       },
     );
 

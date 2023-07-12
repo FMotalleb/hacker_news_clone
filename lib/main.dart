@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> with LogableObject {
   int _counter = 0;
 
   void _incrementCounter() async {
+    warning(MediaQuery.sizeOf(context));
     final box = await Hive.openLazyBox<String>('test_box');
     final result = HNRepository(
       HttpSource(),
