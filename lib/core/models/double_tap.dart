@@ -5,6 +5,7 @@ class CachedResult<T> extends Stream<T> {
   factory CachedResult(
     Future<T?> fromCache,
     Future<T?> toWaitFor,
+    Future<void> Function() discard,
   ) {
     final stream = rx.DeferStream(
       () => Stream.fromFutures(
@@ -14,11 +15,12 @@ class CachedResult<T> extends Stream<T> {
         ],
       ),
     ).whereType<T>();
-    return CachedResult._(stream);
+    return CachedResult._(stream, discard);
   }
 
   CachedResult._(
     this._dataStream,
+    this.discardFetching,
   );
   final Stream<T> _dataStream;
   @override
@@ -35,4 +37,6 @@ class CachedResult<T> extends Stream<T> {
       cancelOnError: cancelOnError,
     );
   }
+
+  Future<void> Function() discardFetching;
 }

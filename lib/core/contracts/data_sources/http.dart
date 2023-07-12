@@ -5,4 +5,5 @@ import 'package:hacker_news_clone/core/models/response_model.dart' //
 abstract class IHttpDataSource<T> {
   Future<internal.Response<T>> get(String path);
   Future<internal.Response<String>> getRaw(String path);
+  Future<void> discardRequestByHash(int hash);
 }

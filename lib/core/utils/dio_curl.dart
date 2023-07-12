@@ -22,7 +22,7 @@ class CurlLoggerDioInterceptor extends Interceptor {
   final Logger logger;
 
   @override
-  void onError(DioError err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) {
     logger.severe(
       _renderCurlRepresentation(err.requestOptions),
       err,
@@ -64,7 +64,6 @@ class CurlLoggerDioInterceptor extends Interceptor {
         '-i',
         multiline: multilineUnixFormat,
       );
-
     options.headers.forEach((k, v) {
       if (!['Cookie', 'content-length'].contains(k)) {
         final headerValue = '-H "$k: $v"';

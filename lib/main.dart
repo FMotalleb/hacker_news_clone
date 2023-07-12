@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hacker_news_clone/core/data_sources/http.dart';
 import 'package:hacker_news_clone/core/data_sources/local_raw_storage.dart';
+import 'package:hacker_news_clone/core/models/double_tap.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -41,17 +42,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with LogableObject {
   int _counter = 0;
-
+  CachedResult? _test;
   void _incrementCounter() async {
-    warning(MediaQuery.sizeOf(context));
     final box = await Hive.openLazyBox<String>('test_box');
+    await _test?.discardFetching();
     final result = HNRepository(
       HttpSource(),
       LocalRawStore(box),
-    ).maxItemsCount();
-    await for (final i in result) {
-      info(i);
-    }
+    ).getItem(36694686);
+    _test = result;
+    final message = await result.toList();
+    print(message);
+    // await for (final i in result) {
+    //   info(i);
+    // }
     setState(() {
       _counter++;
     });
