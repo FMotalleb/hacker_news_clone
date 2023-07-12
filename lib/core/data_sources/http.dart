@@ -10,7 +10,7 @@ import 'package:hacker_news_clone/core/models/response_model.dart' //
 import 'package:hacker_news_clone/core/utils/dio_curl.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 
-final _envHttpProxy = Platform.environment['HTTP_PROXY'];
+// final _envHttpProxy = Platform.environment['HTTP_PROXY'];
 
 class HttpSource extends IHttpDataSource<HackerNewsItem> with LogableObject {
   factory HttpSource() {
@@ -29,16 +29,15 @@ class HttpSource extends IHttpDataSource<HackerNewsItem> with LogableObject {
   }
 
   void _initializeProxy(Dio dio) {
-    (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
-      final client = HttpClient();
-      if (_envHttpProxy != null) {
-        config('Proxy configuration found: $_envHttpProxy');
-        client
-          ..badCertificateCallback = ((_, __, ___) => true)
-          ..findProxy = (uri) => ('PROXY $_envHttpProxy;');
-      }
-      return client;
-    };
+    // (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
+    //   final client = HttpClient();
+    //   // if (_envHttpProxy != null) {
+    //   // info('Proxy configuration found: $_envHttpProxy');
+    //   client..badCertificateCallback = ((_, __, ___) => true);
+    //   // ..findProxy = HttpClient.findProxyFromEnvironment;
+    //   // }
+    //   return client;
+    // };
   }
 
   void _initializeInterceptor(Dio dio) {
