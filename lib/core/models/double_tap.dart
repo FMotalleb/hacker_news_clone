@@ -3,8 +3,8 @@ import 'package:rxdart/rxdart.dart' as rx;
 
 class CachedResult<T> extends Stream<T> {
   factory CachedResult(
-    Future<T> fromCache,
-    Future<T> toWaitFor,
+    Future<T?> fromCache,
+    Future<T?> toWaitFor,
   ) {
     final stream = rx.DeferStream(
       () => Stream.fromFutures(
@@ -13,7 +13,7 @@ class CachedResult<T> extends Stream<T> {
           toWaitFor,
         ],
       ),
-    );
+    ).whereType<T>();
     return CachedResult._(stream);
   }
 
