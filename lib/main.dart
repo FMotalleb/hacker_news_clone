@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:hacker_news_clone/core/data_sources/http.dart';
 import 'package:hacker_news_clone/core/data_sources/local_raw_storage.dart';
 import 'package:hacker_news_clone/core/models/double_tap.dart';
+import 'package:hacker_news_clone/providers/repository_provider.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 
 import 'core/repository/hacker_news_repository.dart';
 
-void main() {
+Future<void> main() async {
   Logger.root.level = kDebugMode ? Level.ALL : Level.WARNING;
   HemendLogger.defaultLogger();
   WidgetsFlutterBinding.ensureInitialized();
   Hive.init('./');
-  runApp(const MyApp());
+  final box = await Hive.openLazyBox<String>('test');
+
+  runApp(
+    Provider(
+      create: (_) => repositoryProvider(box),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -42,24 +51,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> with LogableObject {
   int _counter = 0;
-  CachedResult? _test;
-  void _incrementCounter() async {
-    final box = await Hive.openLazyBox<String>('test_box');
-    await _test?.discardFetching();
-    final result = HNRepository(
-      HttpSource(),
-      LocalRawStore(box),
-    ).getItem(36694686);
-    _test = result;
-    final message = await result.toList();
-    print(message);
-    // await for (final i in result) {
-    //   info(i);
-    // }
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,10 +61,6 @@ class _MyHomePageState extends State<MyHomePage> with LogableObject {
       ),
       body: Center(
         child: Column(
-          //
-
-          //
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
@@ -87,10 +74,15 @@ class _MyHomePageState extends State<MyHomePage> with LogableObject {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () {
+          context.read<HNRepository>().maxItemsCount().forEach(info);
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
     );
   }
+
+  @override
+  String get loggerName => 'MapPage';
 }
