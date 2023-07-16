@@ -14,21 +14,14 @@ sealed class HackerNewsItem extends Equatable {
         return HNComment.fromJson(data);
       default:
         throw ParserException('this type of HN item is not supported yet');
-
-      // "job", "poll", or "pollopt"
     }
   }
   int get id;
-  String? get text; // HTML
-  // HNItemType get type;
+  String? get text;
   String get by;
   DateTime get time;
   bool get dead;
   List<int> get kids;
-  // Uri? get url;
-  // int? get score;
-  // String? get title; // HTML
-  // descendants, parts, poll
   Map<String, dynamic> toMap();
   String toJson() => jsonEncode(toMap());
 }
@@ -43,7 +36,6 @@ class HNStory extends HackerNewsItem {
     required this.time,
     required this.score,
     required this.url,
-    // ignore: avoid_field_initializers_in_const_classes
   });
   factory HNStory.fromJson(Map<String, dynamic> data) {
     return switch (data) {
@@ -125,7 +117,6 @@ class HNComment extends HackerNewsItem {
     required this.text,
     required this.parent,
     required this.time,
-    // ignore: avoid_field_initializers_in_const_classes
   });
   factory HNComment.fromJson(Map<String, dynamic> data) {
     return switch (data) {
