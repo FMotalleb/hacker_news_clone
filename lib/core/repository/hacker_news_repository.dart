@@ -66,10 +66,10 @@ class HNRepository extends IHNewsRepository with LogableObject {
         )
         .then(
       (value) async {
-        if (value is Iterable<int>) {
+        if (value is HackerNewsItem) {
           await _localRawSource.set(
             key,
-            jsonEncode(value),
+            value.toJson(),
           );
           return value;
         }

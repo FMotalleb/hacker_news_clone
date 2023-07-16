@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:hacker_news_clone/core/exceptions/parser_exception.dart';
 
@@ -27,6 +29,8 @@ sealed class HackerNewsItem extends Equatable {
   // int? get score;
   // String? get title; // HTML
   // descendants, parts, poll
+  Map<String, dynamic> toMap();
+  String toJson() => jsonEncode(toMap());
 }
 
 class HNStory extends HackerNewsItem {
@@ -98,6 +102,18 @@ class HNStory extends HackerNewsItem {
         score,
         url,
       ];
+
+  @override
+  Map<String, dynamic> toMap() => {
+        'by': by,
+        'id': id,
+        'kids': kids,
+        'score': score,
+        'time': time.millisecondsSinceEpoch ~/ 1000,
+        'title': text,
+        'type': 'story',
+        'url': url.toString(),
+      };
 }
 
 class HNComment extends HackerNewsItem {
@@ -117,7 +133,7 @@ class HNComment extends HackerNewsItem {
         'by': final String by,
         'id': final int id,
         'parent': final int parentId,
-        'kids': final List<int> kids,
+        'kids': final List<dynamic> kids,
         'time': final int time,
         'title': final String text,
         'type': 'comment',
@@ -126,7 +142,7 @@ class HNComment extends HackerNewsItem {
           by: by,
           id: id,
           parent: parentId,
-          kids: kids,
+          kids: kids.whereType<int>().toList(),
           time: DateTime.fromMillisecondsSinceEpoch(time * 1000),
           text: text,
           dead: data['dead'] != null && data['dead'] == true,
@@ -163,4 +179,15 @@ class HNComment extends HackerNewsItem {
         text,
         time,
       ];
+
+  @override
+  Map<String, dynamic> toMap() => {
+        'by': by,
+        'id': id,
+        'parent': parent,
+        'kids': kids,
+        'time': time.millisecondsSinceEpoch ~/ 1000,
+        'title': text,
+        'type': 'comment',
+      };
 }

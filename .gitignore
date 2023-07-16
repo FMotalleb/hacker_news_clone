@@ -45,3 +45,6 @@ app.*.map.json
 
 pubspec.lock
 .vscode/launch.json
+test_box.lock
+.gitignore
+test_box.hive
