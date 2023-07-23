@@ -5,6 +5,7 @@ import 'package:hacker_news_clone/features/feed_selector/widgets/selector_view.d
 import 'package:hacker_news_clone/providers/repository_provider.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'features/feed_reader/widget/hn_list_view.dart';
 
@@ -12,8 +13,9 @@ Future<void> main() async {
   Logger.root.level = kDebugMode ? Level.ALL : Level.WARNING;
   HemendLogger.defaultLogger();
   WidgetsFlutterBinding.ensureInitialized();
-  Hive.init('./');
-  final box = await Hive.openLazyBox<String>('test');
+  final storageAddress = await getApplicationDocumentsDirectory();
+  Hive.init(storageAddress.path);
+  final box = await Hive.openLazyBox<String>('information_cache');
 
   runApp(
     Provider(
