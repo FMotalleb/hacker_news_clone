@@ -48,3 +48,4 @@ pubspec.lock
 test_box.lock
 .gitignore
 test_box.hive
+outputs/
