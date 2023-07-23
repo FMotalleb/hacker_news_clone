@@ -6,7 +6,7 @@
         "build_arg": "apk",
         "output_type": "apk",
         "build_type": "release",
-        "is_online": false,
+        "is_online": true,
         "is_verbos": true,
         "is_forced": false,
         "extra_args": []
