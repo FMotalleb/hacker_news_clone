@@ -17,7 +17,7 @@ class HttpSource extends IHttpDataSource<HackerNewsItem> with LogableObject {
     final dioClient = Dio(
       BaseOptions(
         baseUrl: 'https://hacker-news.firebaseio.com/v0/',
-        connectTimeout: const Duration(seconds: 5),
+        connectTimeout: const Duration(seconds: 15),
       ),
     );
     return HttpSource._(dioClient, HackerNewsItem.fromMap);

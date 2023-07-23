@@ -28,14 +28,14 @@ void main() async {
     'url': 'http://www.veotag.com/player/?u=gwbrgolswx'
   };
   const mes =
-      '{"by":"howthisends","descendants":13,"id":36694686,"kids":[36695492,36695640,36695649,36695407,36694786,36695227],"score":34,"time":1689170529,"title":"AGI Simulator","type":"story","url":"https://agi.aitida.com/"}';
+      '{"by":"Max-20","descendants":1,"id":36836700,"kids":[36836726],"score":2,"time":1690128778,"title":"Show HN: Modern and lightweight AI copywriting platform built with PHP","type":"story","url":"https://writeseed.com"}';
   // final TestType item = (time: DateTime.now());
   // DateTime time;
   // TestType item = (time: 0);
 
   print(HackerNewsItem.fromMap(jsonDecode(mes) as Json));
-  final data = await HNRepository(HttpSource(), LocalRawSource()).getItem(809).toList();
-  print(data);
+  // final data = await HNRepository(HttpSource(), LocalRawSource()).getItem(809).toList();
+  // print(data);
 }
 
 class LocalRawSource extends ILocalDataSource<String?> {

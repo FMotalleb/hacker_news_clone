@@ -9,8 +9,8 @@ import 'package:hacker_news_clone/core/models/response_model.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 
 enum HNFeedType {
-  topStories('topstories.json'),
   newStories('newstories.json'),
+  topStories('topstories.json'),
   bestStories('beststories.json'),
   ;
 
