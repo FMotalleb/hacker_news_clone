@@ -89,7 +89,7 @@ HEMEND_CONFIG:
   UPLOAD:
     API: "https://demo.hemend.com"
     PATH: /hem_service/upload/outputs
-  NAME_FORMAT: "$n%-$v%-$build_type%-$YYYY%-$MM%-$DD%-$HH%,$mm%,$ss%"
+  NAME_FORMAT: "$n%-$v%-$build_type%"
   CLI_VERSION: 0.3
 ENV:
   APP:
