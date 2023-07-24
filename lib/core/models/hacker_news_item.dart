@@ -42,7 +42,7 @@ class HNStory extends HackerNewsItem {
       {
         'by': final String by,
         'id': final int id,
-        'kids': final Iterable<dynamic> kids,
+        // 'kids': final Iterable<dynamic> kids,
         'score': final int score,
         'time': final int time,
         'title': final String text,
@@ -52,7 +52,8 @@ class HNStory extends HackerNewsItem {
         HNStory(
           by: by,
           id: id,
-          kids: kids.whereType<int>().toList(),
+          // ignore: avoid_dynamic_calls, inference_failure_on_collection_literal
+          kids: ((data['kids'] ?? []) as Iterable<dynamic>).whereType<int>().toList(),
           score: score,
           time: DateTime.fromMillisecondsSinceEpoch(time * 1000),
           text: text,

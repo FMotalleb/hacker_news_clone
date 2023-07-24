@@ -28,7 +28,13 @@ class HttpSource extends IHttpDataSource<HackerNewsItem> with LogableObject {
   }
 
   void _initializeInterceptor(Dio dio) {
-    dio.interceptors.add(CurlLoggerDioInterceptor(logger: getChild('Curl')));
+    if (kDebugMode) {
+      dio.interceptors.add(
+        CurlLoggerDioInterceptor(
+          logger: getChild('Curl'),
+        ),
+      );
+    }
   }
 
   final Dio _dioClient;
