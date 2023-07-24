@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hacker_news_clone/core/repository/hacker_news_repository.dart';
 import 'package:hacker_news_clone/features/feed_selector/cubit/feed_selector_cubit.dart';
-import 'package:hacker_news_clone/features/feed_selector/cubit/feed_selector_cubit.dart';
 import 'package:hemend_logger/hemend_logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -150,7 +149,8 @@ class SelectorSegment extends StatelessWidget with LogableObject {
                               if (context.mounted) {
                                 Navigator.of(context).pop();
                               }
-                              logger.warning('Log ${e.uri.pathSegments.last} is deleted');
+                              logger.warning(
+                                  'Log ${e.uri.pathSegments.last} is deleted');
                             },
                             isDestructiveAction: true,
                             child: const Text('Delete'),

@@ -9,9 +9,7 @@ import 'dart:convert';
 
 import 'package:hacker_news_clone/core/contracts/data_sources/local.dart';
 import 'package:hacker_news_clone/core/contracts/typedefs.dart';
-import 'package:hacker_news_clone/core/data_sources/http.dart';
 import 'package:hacker_news_clone/core/models/hacker_news_item.dart';
-import 'package:hacker_news_clone/core/repository/hacker_news_repository.dart';
 
 typedef TestType = ({int time});
 void main() async {
@@ -27,10 +25,10 @@ void main() async {
 
 class LocalRawSource extends ILocalDataSource<String?> {
   @override
-  Future<String?> get(int id) => Future.value(null);
+  Future<String?> get(int id) => Future.value();
 
   @override
-  Future<void> set(int id, String? data) => Future.value(null);
+  Future<void> set(int id, String? data) => Future.value();
 
   @override
   Future<bool> unset(int id) => Future.value(true);

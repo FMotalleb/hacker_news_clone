@@ -53,12 +53,15 @@ class HNStory extends HackerNewsItem {
           by: by,
           id: id,
           // ignore: avoid_dynamic_calls, inference_failure_on_collection_literal
-          kids: ((data['kids'] ?? []) as Iterable<dynamic>).whereType<int>().toList(),
+          kids: ((data['kids'] ?? []) as Iterable<dynamic>)
+              .whereType<int>()
+              .toList(),
           score: score,
           time: DateTime.fromMillisecondsSinceEpoch(time * 1000),
           text: text,
           dead: data['dead'] != null && data['dead'] == true,
-          url: data['url'] != null ? Uri.tryParse(data['url'].toString()) : null,
+          url:
+              data['url'] != null ? Uri.tryParse(data['url'].toString()) : null,
         ),
       _ => throw ParserException('Cannot parse map to HNStory')
     };
