@@ -1,7 +1,7 @@
 name: hacker_news_clone
 description: A hobby project. hacker news clone in flutter.
 publish_to: none
-version: 1.0.0+2
+version: 1.0.0+3
 environment: 
   sdk: '>=3.0.2 <4.0.0'
 dependencies: 
