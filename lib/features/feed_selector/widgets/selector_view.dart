@@ -129,7 +129,7 @@ class SelectorSegment extends StatelessWidget with LogableObject {
                 child: Text(e.uri.pathSegments.last),
                 onPressed: () async {
                   logger.info(
-                    'selected file ${e.uri.pathSegments.last} so loading ${e.path}',
+                    '''selected file ${e.uri.pathSegments.last} so loading ${e.path}''',
                   );
                   final content = await e.readAsString();
                   if (context.mounted) {
@@ -150,7 +150,8 @@ class SelectorSegment extends StatelessWidget with LogableObject {
                                 Navigator.of(context).pop();
                               }
                               logger.warning(
-                                  'Log ${e.uri.pathSegments.last} is deleted');
+                                'Log ${e.uri.pathSegments.last} is deleted',
+                              );
                             },
                             isDestructiveAction: true,
                             child: const Text('Delete'),
