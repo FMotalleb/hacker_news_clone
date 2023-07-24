@@ -47,7 +47,7 @@ class HNStory extends HackerNewsItem {
         'time': final int time,
         'title': final String text,
         'type': 'story',
-        'url': final String? url,
+        // 'url': final String? url,
       } =>
         HNStory(
           by: by,
@@ -57,7 +57,7 @@ class HNStory extends HackerNewsItem {
           time: DateTime.fromMillisecondsSinceEpoch(time * 1000),
           text: text,
           dead: data['dead'] != null && data['dead'] == true,
-          url: url != null ? Uri.tryParse(url) : null,
+          url: data['url'] != null ? Uri.tryParse(data['url'].toString()) : null,
         ),
       _ => throw ParserException('Cannot parse map to HNStory')
     };

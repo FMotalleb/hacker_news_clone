@@ -33,7 +33,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hacker News',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange, brightness: Brightness.dark),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.blue,
+          brightness: Brightness.dark,
+        ),
         useMaterial3: true,
       ),
       home: const MyHomePage(title: 'Hacker News'),

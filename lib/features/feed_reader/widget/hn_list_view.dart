@@ -83,39 +83,60 @@ class _HNItemsListViewPresentation extends StatelessWidget {
                           ),
                           // initiallyExpanded: true,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  const TextSpan(text: 'By '),
-                                  TextSpan(text: data.by),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(text: 'By '),
+                                      TextSpan(text: data.by),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  const TextSpan(text: 'At '),
-                                  _formatDate(data),
-                                ],
-                              ),
+                            Row(
+                              children: [
+                                const SizedBox(
+                                  width: 15,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      const TextSpan(text: 'At '),
+                                      _formatDate(data),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                             if (data.url != null)
-                              RichText(
-                                text: TextSpan(
-                                  children: [
-                                    const TextSpan(text: 'Url: '),
-                                    TextSpan(
-                                      text: data.url!.host,
-                                      style: const TextStyle(
-                                        color: Colors.blue,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          launchUrl(data.url!);
-                                        },
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 15,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        const TextSpan(text: 'Url: '),
+                                        TextSpan(
+                                          text: data.url!.host,
+                                          style: const TextStyle(
+                                            color: Colors.blue,
+                                          ),
+                                          recognizer: TapGestureRecognizer()
+                                            ..onTap = () {
+                                              launchUrl(data.url!);
+                                            },
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                           ],
                         ),

@@ -28,7 +28,7 @@ void main() async {
     'url': 'http://www.veotag.com/player/?u=gwbrgolswx'
   };
   const mes =
-      '{"by":"Max-20","descendants":1,"id":36836700,"kids":[36836726],"score":2,"time":1690128778,"title":"Show HN: Modern and lightweight AI copywriting platform built with PHP","type":"story","url":"https://writeseed.com"}';
+      '{"by":"akasakahakada","descendants":1,"id":36844840,"kids":[36846275],"score":8,"text":"I have noticed that google search resulting hamful&#x2F;phishing&#x2F;fake&#x2F;fraud websites in recent month.<p>No matter what I search, those junks keep showing up.<p>They are all with different url and look legit like .gov, .br, .com, .edu etc. Some even mimic real company by only differing 1 character in the domain. But those are not real, when you click that it will just redirect to the scam site.<p>One common characteristic is that most of them are non titled website. Google search will tell me that the page has no title. And the preview beneath that are all random garbage that are copied from random sites by bot.<p>With a little search, it seems that I am being DNS hijacked. But using 3 different devices and networks, I can confirm that the weird behavior is consistent.<p>WhoIsMyDns.com reports that my DNS are all from cloudflare.<p>What is going on?","time":1690189158,"title":"Ask HN: Am I the only one that has broken Google search results?","type":"story"}';
   // final TestType item = (time: DateTime.now());
   // DateTime time;
   // TestType item = (time: 0);
