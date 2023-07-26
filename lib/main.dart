@@ -27,7 +27,8 @@ Future<void> main() async {
   logAgent.addListener(
     HemendAsyncLogRecorder.file(
       logLevel: 900,
-      stringify: (record) => '[${record.loggerName}] (${record.level}):\n${record.message}\n---\n',
+      stringify: (record) =>
+          '[${record.loggerName}] (${record.level}):\n${record.message}\n---\n',
       filePath: logPath.toFilePath(),
     ),
   );
