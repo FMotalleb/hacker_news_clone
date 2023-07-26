@@ -185,9 +185,11 @@ class _HNStoryViewState extends State<HNStoryView> {
                 ),
                 if (data.url != null)
                   SingleChildScrollView(
+                    reverse: true,
                     scrollDirection: Axis.horizontal,
                     child: ButtonBar(
                       // mainAxisSize: MainAxisSize.min,
+
                       children: [
                         ElevatedButton.icon(
                           onPressed: () {
