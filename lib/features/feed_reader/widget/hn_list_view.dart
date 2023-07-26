@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,109 +44,7 @@ class _HNItemsListViewPresentation extends StatelessWidget {
           final FeedReaderInformationUpdate update => ListView.builder(
               itemBuilder: (context, index) {
                 final itemId = update.items[index];
-                return StreamBuilder(
-                  builder: (context, state) {
-                    final data = state.data;
-                    if (data is! HNStory) {
-                      if (state.connectionState == ConnectionState.done) {
-                        return const SizedBox();
-                      }
-                      return const SizedBox(
-                        height: 100,
-                        child: Center(
-                          child: SizedBox(
-                            height: 2,
-                            width: 50,
-                            child: LinearProgressIndicator(),
-                          ),
-                        ),
-                      );
-                    }
-                    final fullText = data.text;
-                    return Column(
-                      children: [
-                        Container(
-                          height: 2,
-                          color: Theme.of(context).shadowColor,
-                        ),
-                        ExpansionTile(
-                          title: Text(fullText),
-                          leading: Container(
-                            height: 50,
-                            width: 50,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.yellow,
-                              ),
-                            ),
-                            child: Text(data.score.toString()),
-                          ),
-                          // initiallyExpanded: true,
-                          children: [
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(text: 'By '),
-                                      TextSpan(text: data.by),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 15,
-                                ),
-                                RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      const TextSpan(text: 'At '),
-                                      _formatDate(data),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (data.url != null)
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 15,
-                                  ),
-                                  RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        const TextSpan(text: 'Url: '),
-                                        TextSpan(
-                                          text: data.url!.host,
-                                          style: const TextStyle(
-                                            color: Colors.blue,
-                                          ),
-                                          recognizer: TapGestureRecognizer()
-                                            ..onTap = () {
-                                              launchUrl(data.url!);
-                                            },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                          ],
-                        ),
-                      ],
-                    );
-                  },
-                  stream: context.read<HNRepository>().getItem(itemId),
-                );
+                return HNStoryView(itemId: itemId);
               },
               itemCount: update.itemsCount,
             ),
@@ -155,19 +55,133 @@ class _HNItemsListViewPresentation extends StatelessWidget {
       },
     );
   }
+}
 
-  TextSpan _formatDate(HackerNewsItem data) {
-    final time = data.time.toLocal();
-    final buffer = StringBuffer()
-      ..write(time.year)
-      ..write('-')
-      ..write(time.month.toString().padLeft(2, '0'))
-      ..write('-')
-      ..write(time.day.toString().padLeft(2, '0'))
-      ..write(' ')
-      ..write(time.hour.toString().padLeft(2, '0'))
-      ..write(':')
-      ..write(time.minute.toString().padLeft(2, '0'));
-    return TextSpan(text: buffer.toString());
+class HNStoryView extends StatefulWidget {
+  const HNStoryView({
+    super.key,
+    required this.itemId,
+  });
+
+  final int itemId;
+
+  @override
+  State<HNStoryView> createState() => _HNStoryViewState();
+}
+
+class _HNStoryViewState extends State<HNStoryView> {
+  Future<void> Function()? onDeath;
+  @override
+  void dispose() {
+    unawaited(onDeath?.call());
+    super.dispose();
   }
+
+  @override
+  Widget build(BuildContext context) {
+    final fetch = context.read<HNRepository>().getItem(widget.itemId);
+    onDeath = fetch.discardFetching;
+    return StreamBuilder(
+      stream: fetch,
+      builder: (context, state) {
+        final data = state.data;
+        if (data is! HNStory) {
+          if (state.connectionState == ConnectionState.done) {
+            return const SizedBox();
+          }
+          return const SizedBox(
+            height: 100,
+            child: Center(
+              child: SizedBox(
+                height: 2,
+                width: 50,
+                child: LinearProgressIndicator(),
+              ),
+            ),
+          );
+        }
+        final fullText = data.text;
+        return Column(
+          children: [
+            Container(
+              height: 2,
+              color: Theme.of(context).shadowColor,
+            ),
+            ExpansionTile(
+              title: Text(fullText),
+              leading: Container(
+                height: 50,
+                width: 50,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.yellow,
+                  ),
+                ),
+                child: Text(data.score.toString()),
+              ),
+              // expandedAlignment: Alignment.centerLeft,
+              expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              // initiallyExpanded: true,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(text: 'By '),
+                      TextSpan(text: data.by),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      const TextSpan(text: 'At '),
+                      _formatDate(data),
+                    ],
+                  ),
+                ),
+                if (data.url != null)
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(text: 'Url: '),
+                        TextSpan(
+                          text: data.url!.host,
+                          style: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              launchUrl(
+                                data.url!,
+                                mode: LaunchMode.externalApplication,
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+TextSpan _formatDate(HackerNewsItem data) {
+  final time = data.time.toLocal();
+  final buffer = StringBuffer()
+    ..write(time.year)
+    ..write('-')
+    ..write(time.month.toString().padLeft(2, '0'))
+    ..write('-')
+    ..write(time.day.toString().padLeft(2, '0'))
+    ..write(' ')
+    ..write(time.hour.toString().padLeft(2, '0'))
+    ..write(':')
+    ..write(time.minute.toString().padLeft(2, '0'));
+  return TextSpan(text: buffer.toString());
 }

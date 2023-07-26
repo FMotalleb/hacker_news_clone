@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hacker_news_clone/features/feed_selector/cubit/feed_selector_cubit.dart';
@@ -17,18 +19,24 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  final storageAddress = await getApplicationDocumentsDirectory();
+  final storageAddress = await getApplicationSupportDirectory();
+  final segments = storageAddress.uri.pathSegments.toList();
+  while (segments.last.isEmpty) {
+    segments.removeLast();
+  }
   final logPath = Uri(
     pathSegments: [
-      ...storageAddress.uri.pathSegments,
+      '',
+      ...segments,
       'instance_${DateTime.now().millisecondsSinceEpoch}.log',
     ],
   );
+
   logAgent.addListener(
     HemendAsyncLogRecorder.file(
       logLevel: 900,
-      stringify: (record) =>
-          '[${record.loggerName}] (${record.level}):\n${record.message}\n---\n',
+      allocate: true,
+      stringify: (record) => '[${record.loggerName}] (${record.level}):\n${record.message}\n---\n',
       filePath: logPath.toFilePath(),
     ),
   );
@@ -48,38 +56,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Hacker News',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
-          brightness: Brightness.dark,
+    return BlocProvider(
+      key: const Key('mamad'),
+      create: (context) => FeedSelectorCubit(),
+      child: MaterialApp(
+        title: 'Hacker News',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
+        home: const MyHomePage(title: 'Hacker News'),
       ),
-      home: const MyHomePage(title: 'Hacker News'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatelessWidget with LogableObject {
   const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with LogableObject {
-  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FeedSelectorCubit(),
-      child: const Scaffold(
-        body: HNItemsListView(),
-        bottomNavigationBar: SelectorSegment(),
-      ),
+    return const Scaffold(
+      body: HNItemsListView(),
+      bottomNavigationBar: SelectorSegment(),
     );
   }
 

@@ -101,8 +101,16 @@ class SelectorSegment extends StatelessWidget with LogableObject {
 }
 
 Future<void> _showLogsModal(BuildContext context, Logger logger) async {
-  final storageAddress = await getApplicationDocumentsDirectory();
-  final logs = await storageAddress
+  // final storageAddress = await getApplicationSupportDirectory();
+  final storageAddress = await getApplicationSupportDirectory().then(
+    (value) => value.absolute,
+  );
+  final segments = storageAddress.uri.pathSegments.toList();
+  print(segments);
+  while (segments.last.isEmpty) {
+    segments.removeLast();
+  }
+  final logs = await Directory(['/', ...segments].join('/'))
       .list()
       .where(
         (event) => event.path.endsWith('.log'),
