@@ -119,7 +119,7 @@ Future<void> _showLogsModal(BuildContext context, Logger logger) async {
               child: Text(e.uri.pathSegments.last),
               onPressed: () async {
                 logger.info(
-                  'selected file ${e.uri.pathSegments.last} so loading ${e.path}',
+                  '''selected file ${e.uri.pathSegments.last} so loading ${e.path}''',
                 );
                 final content = await e.readAsString();
                 if (context.mounted) {
