@@ -7,6 +7,7 @@ import 'package:hacker_news_clone/core/models/hacker_news_item.dart';
 import 'package:hacker_news_clone/core/repository/hacker_news_repository.dart';
 import 'package:hacker_news_clone/features/feed_reader/cubit/feed_reader_cubit.dart';
 import 'package:hacker_news_clone/features/feed_selector/cubit/feed_selector_cubit.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HNItemsListView extends StatelessWidget {
@@ -123,8 +124,17 @@ class _HNStoryViewState extends State<HNStoryView> {
               ),
               // expandedAlignment: Alignment.centerLeft,
               expandedCrossAxisAlignment: CrossAxisAlignment.start,
+              expandedAlignment: const Alignment(-0.9, 0),
+              childrenPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 5,
+              ),
+
               // initiallyExpanded: true,
               children: [
+                const SizedBox(
+                  height: 5,
+                ),
                 RichText(
                   text: TextSpan(
                     children: [
@@ -138,6 +148,14 @@ class _HNStoryViewState extends State<HNStoryView> {
                     children: [
                       const TextSpan(text: 'At '),
                       _formatDate(data),
+                    ],
+                  ),
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: data.kids.length.toString()),
+                      const TextSpan(text: ' comments'),
                     ],
                   ),
                 ),
@@ -162,6 +180,66 @@ class _HNStoryViewState extends State<HNStoryView> {
                       ],
                     ),
                   ),
+                const SizedBox(
+                  height: 10,
+                ),
+                if (data.url != null)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: ButtonBar(
+                      // mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            final baseUri = Uri.parse(
+                              'https://news.ycombinator.com/item',
+                            ).replace(
+                              queryParameters: {
+                                'id': data.id.toString(),
+                              },
+                            );
+                            launchUrl(
+                              baseUri,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          icon: const Icon(Icons.open_in_browser_rounded),
+                          label: const Text('Open in HN'),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            final baseUri = Uri.parse(
+                              'https://news.ycombinator.com/item',
+                            ).replace(
+                              queryParameters: {
+                                'id': data.id.toString(),
+                              },
+                            );
+                            Share.share(baseUri.toString());
+                            // launchUrl(
+                            //   data.url!,
+                            //   mode: LaunchMode.externalApplication,
+                            // );
+                          },
+                          icon: const Icon(Icons.share_rounded),
+                          label: const Text('Share'),
+                        ),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            launchUrl(
+                              data.url!,
+                              mode: LaunchMode.externalApplication,
+                            );
+                          },
+                          icon: const Icon(Icons.open_in_browser_rounded),
+                          label: const Text('open'),
+                        ),
+                      ],
+                    ),
+                  ),
+                const SizedBox(
+                  height: 10,
+                ),
               ],
             ),
           ],
